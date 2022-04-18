@@ -13,6 +13,9 @@ def api_home(request, *args, **kwargs):
         pass
     print(data.keys())
     print(request.headers)
+    print(request.GET)      # params er value gulo pawa jabe
+    print(request.POST)        # params er value gulo pawa jabe
+    data['params'] = dict(request.GET)
     data['headers'] = dict(request.headers)
     data['content_type'] = request.content_type
     return JsonResponse(data)
