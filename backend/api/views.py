@@ -27,15 +27,15 @@ from products.serializers import ProductSerializer
 
 @api_view(["GET"])
 def api_home(request, *args, **kwargs):
-    model_data = Product.objects.all().order_by("?").first()    # this will select all objects randomly one by one
+    instance = Product.objects.all().order_by("?").first()  # this will select all objects randomly one by one
     # data = {}
-    if model_data:
-        # data['id'] = model_data.id
-        # data['title'] = model_data.title
-        # data['price'] = model_data.price
-        # data['content'] = model_data.content
+    if instance:
+        # data['id'] = instance.id
+        # data['title'] = instance.title
+        # data['price'] = instance.price
+        # data['content'] = instance.content
 
-        data = ProductSerializer(model_data).data
+        data = ProductSerializer(instance).data
         print(data)
     return Response(data)
 
