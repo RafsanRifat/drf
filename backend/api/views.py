@@ -1,9 +1,11 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.forms.models import model_to_dict
 import json
-# from ..products.models import Product
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from products.models import Product
+from products.serializers import ProductSerializer
+
 
 # Create your views here.
 
@@ -23,14 +25,21 @@ from products.models import Product
 #     data['content_type'] = request.content_type
 #     return JsonResponse(data)
 
-
+@api_view(["GET"])
 def api_home(request, *args, **kwargs):
-    model_data = Product.objects.all().order_by("?").first()
-    data = {}
+    model_data = Product.objects.all().order_by("?").first()    # this will select all objects randomly one by one
+    # data = {}
     if model_data:
         # data['id'] = model_data.id
         # data['title'] = model_data.title
         # data['price'] = model_data.price
         # data['content'] = model_data.content
-        data = model_to_dict(model_data)
-    return JsonResponse(data)
+
+        data = ProductSerializer(model_data).data
+        print(data)
+    return Response(data)
+
+
+"""
+    Goal is to take django model instance >>> turn indo python Dictionary >>> return Json to client
+"""
