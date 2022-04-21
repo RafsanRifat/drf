@@ -1,3 +1,4 @@
+"""
 from django.http import JsonResponse, HttpResponse
 from django.forms.models import model_to_dict
 import json
@@ -37,13 +38,27 @@ def api_home(request, *args, **kwargs):
     #
     #     data = ProductSerializer(instance).data
     serializer = ProductSerializer(data=request.data)
-    if serializer.is_valid():
-        instance = serializer.save()
-        print(instance)
+    if serializer.is_valid(raise_exception=True):
+        # instance = serializer.save()  # ei instance ta r serialized nai. eta database a save howa object
+        # print(instance)
         # data = serializer.data
         return Response(serializer.data)
 
 
+
+    #Goal is to take django model instance >>> turn indo python Dictionary >>> return Json to client
+
+
 """
-    Goal is to take django model instance >>> turn indo python Dictionary >>> return Json to client
-"""
+# Generic view ------>>>
+
+
+from rest_framework import generics
+from .models import Product
+from .serializers import ProductSerializer
+
+
+class ProductDetailAPIView(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+product_detail_view = ProductDetailAPIView.as_view()
