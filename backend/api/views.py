@@ -25,19 +25,23 @@ from products.serializers import ProductSerializer
 #     data['content_type'] = request.content_type
 #     return JsonResponse(data)
 
-@api_view(["GET"])
+@api_view(["POST"])
 def api_home(request, *args, **kwargs):
-    instance = Product.objects.all().order_by("?").first()  # this will select all objects randomly one by one
-    # data = {}
-    if instance:
-        # data['id'] = instance.id
-        # data['title'] = instance.title
-        # data['price'] = instance.price
-        # data['content'] = instance.content
-
-        data = ProductSerializer(instance).data
-        print(data)
-    return Response(data)
+    # instance = Product.objects.all().order_by("?").first()  # this will select all objects randomly one by one
+    # # data = {}
+    # if instance:
+    #     # data['id'] = instance.id
+    #     # data['title'] = instance.title
+    #     # data['price'] = instance.price
+    #     # data['content'] = instance.content
+    #
+    #     data = ProductSerializer(instance).data
+    serializer = ProductSerializer(data=request.data)
+    if serializer.is_valid():
+        instance = serializer.save()
+        print(instance)
+        # data = serializer.data
+        return Response(serializer.data)
 
 
 """
