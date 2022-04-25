@@ -25,6 +25,17 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 
 product_detail_view = ProductDetailAPIView.as_view()
 
+"""Delete API View"""
+
+
+class ProductDeleteAPIView(generics.DestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+
+product_delete_view = ProductDeleteAPIView.as_view()
+
 """Update API View"""
 
 
