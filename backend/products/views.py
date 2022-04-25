@@ -25,6 +25,23 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 
 product_detail_view = ProductDetailAPIView.as_view()
 
+"""Update API View"""
+
+
+class ProductUpdateAPIView(generics.UpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def perform_update(self, serializer):
+        title = serializer.validated_data.get('title')
+        content = serializer.validated_data.get('content')
+        if content is None:
+            content = title
+        serializer.save(content=content)
+
+
+product_update_view = ProductUpdateAPIView.as_view()
+
 """Create API View"""
 
 
@@ -43,40 +60,39 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 
 product_create_view = ProductListCreateAPIView.as_view()
 
-
 """     custom view    """
 
-@api_view(['GET', 'POST'])
-def product_alt_view(request, pk=None, *args, **kwargs):
-    method = request.method
-
-    if method == "GET":
-        # url_args
-
-        #  detail view
-        if pk is not None:
-            try:
-                # obj = Product.objects.get(pk=pk)
-                obj = get_object_or_404(Product, pk=pk)
-                data = ProductSerializer(obj)
-                return Response(data.data)
-            except:
-                return Response({"Error": "This item doesn't exist"})
-
-        # list view
-        queryset = Product.objects.all()
-        data = ProductSerializer(queryset, many=True).data
-        return Response(data)
-        pass
-
-    # create view
-    if method == "POST":
-        # create an item
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            title = serializer.validated_data.get('title')
-            content = serializer.validated_data.get('content')
-            if content is None:
-                content = title
-            serializer.save(content=content)
-        # return Response({"invalid": "Not good data"}, status=400)
+# @api_view(['GET', 'POST'])
+# def product_alt_view(request, pk=None, *args, **kwargs):
+#     method = request.method
+#
+#     if method == "GET":
+#         # url_args
+#
+#         #  detail view
+#         if pk is not None:
+#             try:
+#                 # obj = Product.objects.get(pk=pk)
+#                 obj = get_object_or_404(Product, pk=pk)
+#                 data = ProductSerializer(obj)
+#                 return Response(data.data)
+#             except:
+#                 return Response({"Error": "This item doesn't exist"})
+#
+#         # list view
+#         queryset = Product.objects.all()
+#         data = ProductSerializer(queryset, many=True).data
+#         return Response(data)
+#         pass
+#
+#     # create view
+#     if method == "POST":
+#         # create an item
+#         serializer = ProductSerializer(data=request.data)
+#         if serializer.is_valid(raise_exception=True):
+#             title = serializer.validated_data.get('title')
+#             content = serializer.validated_data.get('content')
+#             if content is None:
+#                 content = title
+#             serializer.save(content=content)
+#         # return Response({"invalid": "Not good data"}, status=400)
