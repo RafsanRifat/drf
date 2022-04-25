@@ -7,7 +7,7 @@ from django.shortcuts import render
 # Generic view ------>>>
 
 
-from rest_framework import generics
+from rest_framework import generics, permissions, authentication
 from .models import Product
 from .serializers import ProductSerializer
 from rest_framework import decorators
@@ -31,7 +31,7 @@ product_detail_view = ProductDetailAPIView.as_view()
 class ProductDeleteAPIView(generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    lookup_field = 'pk'
+    # lookup_field = 'pk'
 
 
 product_delete_view = ProductDeleteAPIView.as_view()
@@ -59,6 +59,8 @@ product_update_view = ProductUpdateAPIView.as_view()
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         print(serializer.validated_data)
