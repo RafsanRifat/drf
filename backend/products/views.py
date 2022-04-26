@@ -42,6 +42,7 @@ product_delete_view = ProductDeleteAPIView.as_view()
 class ProductUpdateAPIView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [permissions.DjangoModelPermissions]
 
     def perform_update(self, serializer):
         title = serializer.validated_data.get('title')
@@ -60,7 +61,8 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.DjangoModelPermissions]
+
 
     def perform_create(self, serializer):
         print(serializer.validated_data)
