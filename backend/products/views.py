@@ -60,9 +60,12 @@ product_update_view = ProductUpdateAPIView.as_view()
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.DjangoModelPermissions]
-
+    authentication_classes = [authentication.SessionAuthentication,
+                              authentication.TokenAuthentication
+                              ]
+    permission_classes = [permissions.DjangoModelPermissions,
+                          permissions.IsAdminUser
+                          ]
 
     def perform_create(self, serializer):
         print(serializer.validated_data)
