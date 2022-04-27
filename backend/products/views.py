@@ -64,7 +64,8 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
                               authentication.TokenAuthentication
                               ]
     permission_classes = [permissions.DjangoModelPermissions,
-                          permissions.IsAdminUser
+                          permissions.IsAdminUser,
+
                           ]
 
     def perform_create(self, serializer):
