@@ -10,6 +10,7 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, authentication
 from .models import Product
 from .serializers import ProductSerializer
+from api.permissions import IsStaffEditorPermission
 from rest_framework import decorators
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
@@ -64,7 +65,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
                               authentication.TokenAuthentication
                               ]
     permission_classes = [permissions.DjangoModelPermissions,
-                          permissions.IsAdminUser,
+                          IsStaffEditorPermission,
 
                           ]
 
