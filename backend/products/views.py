@@ -8,7 +8,7 @@ from api.mixins import StaffEditorPermissionMixins
 # Generic view ------>>>
 
 
-from rest_framework import generics, permissions, authentication
+from rest_framework import generics
 from .models import Product
 from .serializers import ProductSerializer
 from api.permissions import IsStaffEditorPermission
@@ -62,9 +62,7 @@ product_update_view = ProductUpdateAPIView.as_view()
 class ProductListCreateAPIView(StaffEditorPermissionMixins, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    authentication_classes = [authentication.SessionAuthentication,
-                              authentication.TokenAuthentication
-                              ]
+
 
     def perform_create(self, serializer):
         print(serializer.validated_data)
