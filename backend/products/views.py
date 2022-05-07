@@ -1,5 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render
+from api.mixins import StaffEditorPermissionMixins
 
 # Create your views here.
 
@@ -19,7 +20,7 @@ from rest_framework.response import Response
 """Detail API View"""
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(StaffEditorPermissionMixins, generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -29,7 +30,7 @@ product_detail_view = ProductDetailAPIView.as_view()
 """Delete API View"""
 
 
-class ProductDeleteAPIView(generics.DestroyAPIView):
+class ProductDeleteAPIView( StaffEditorPermissionMixins, generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # lookup_field = 'pk'
@@ -40,10 +41,10 @@ product_delete_view = ProductDeleteAPIView.as_view()
 """Update API View"""
 
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(StaffEditorPermissionMixins, generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.DjangoModelPermissions]
+
 
     def perform_update(self, serializer):
         title = serializer.validated_data.get('title')
@@ -58,15 +59,12 @@ product_update_view = ProductUpdateAPIView.as_view()
 """Create API View"""
 
 
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+class ProductListCreateAPIView(StaffEditorPermissionMixins, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     authentication_classes = [authentication.SessionAuthentication,
                               authentication.TokenAuthentication
                               ]
-    permission_classes = [permissions.IsAdminUser,
-                          IsStaffEditorPermission,
-                          ]
 
     def perform_create(self, serializer):
         print(serializer.validated_data)
