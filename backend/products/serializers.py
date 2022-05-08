@@ -25,6 +25,12 @@ class ProductSerializer(serializers.ModelSerializer):
             'my_discount',
         ]
 
+    def validate_title(self, value):
+        qs = Product.objects.filter(title__exact=value)
+        if qs.exists():
+            raise serializers.ValidationError(f"{value} is already a peoduct name")
+        return value
+
     def get_edit_url(self, obj):
         request = self.context.get('request')
         if request is None:
