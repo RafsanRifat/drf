@@ -10,4 +10,17 @@ if (loginform) {
 function handleLogin(event) {
     console.log(event)
     event.preventDefault()
+    const loginEndpoint = `${baseEndpoint}/token/`
+    let loginFormData = new FormData(loginform)
+    let loginObjectData = Object.fromEntries(loginFormData)
+    console.log(loginObjectData)
+    console.log(loginFormData)
+    const options = {
+        method: "POST",
+        headers: {
+            "ContentType": "application/json"
+        },
+        body: ""
+    }
+    fetch(loginEndpoint, options)
 }
