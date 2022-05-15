@@ -55,6 +55,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+ROOT_URLCONF = 'cfehome.urls'
+CORS_URLS_REGEX = r"^/api/.*"
+
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
     "https://sub.example.com",
@@ -63,8 +66,18 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://localhost:8111',
 ]
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
-ROOT_URLCONF = 'cfehome.urls'
 
 TEMPLATES = [
     {

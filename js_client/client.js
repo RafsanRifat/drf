@@ -13,14 +13,24 @@ function handleLogin(event) {
     const loginEndpoint = `${baseEndpoint}/token/`
     let loginFormData = new FormData(loginform)
     let loginObjectData = Object.fromEntries(loginFormData)
+    let bodyStr = JSON.stringify(loginObjectData)
     console.log(loginObjectData)
     console.log(loginFormData)
     const options = {
         method: "POST",
         headers: {
-            "ContentType": "application/json"
+            "Content-Type": "application/json"
         },
-        body: ""
+        body: bodyStr
     }
-    fetch(loginEndpoint, options)
+     fetch(loginEndpoint, options) //  Promise
+    .then(response=>{
+        return response.json()
+    })
+        .then(x =>{
+            console.log(x)
+        })
+        .catch(err=> {
+            console.log('err', err)
+    })
 }
